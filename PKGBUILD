@@ -10,7 +10,7 @@
 pkgname=cdrip-tools
 #pkgver=0.2
 pkgver=master
-pkgrel=1
+pkgrel=2
 pkgdesc="Command-line accuraterip verifier and rip offset fixer"
 url="https://github.com/spadev/cdrip-tools/tree/v${pkgver}"
 arch=('i686' 'x86_64')
@@ -28,6 +28,9 @@ build() {
   # nasty library hack - change name to something less generic
   sed -i -e 's/^import utils/import cdrip_utils as utils/' \
          -e 's/^from utils/from cdrip_utils/' *.py
+
+  # fix for Python >= 3.13 "invalid escape sequence"
+  sed -i -E "190s/\(/(r/" arverify.py
 }
 
 package() {
